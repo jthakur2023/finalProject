@@ -3,5 +3,11 @@ class Scene2 extends Phaser.Scene {
 		super("playGame");
     }
 
-    create() {}
+    create() {
+      this.background = this.add.tileSprite(0, 0, config.width, config.height, "background");
+    }
+
+    update() {
+      this.background.tilePositionX += .5;
+    }
 }
