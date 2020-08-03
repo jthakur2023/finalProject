@@ -16,6 +16,7 @@ class Scene2 extends Phaser.Scene{
     update() {
       this.background.tilePositionX += .5;
     }
+    
 
     //reset
 }
