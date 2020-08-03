@@ -6,6 +6,8 @@ class Scene2 extends Phaser.Scene{
     create() {
       this.background = this.add.tileSprite(0, 0, config.width, config.height, "background");
       this.background.setOrigin(0,0);
+
+      this.player = this.add.image(config.width/2,config.height/2, "player");
     }
 
     update() {
