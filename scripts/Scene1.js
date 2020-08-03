@@ -8,6 +8,7 @@ class Scene1 extends Phaser.Scene{
       this.load.image("background", "assets/images/landscape scaled.png");
       // Player Image
       this.load.image("player", "assets/images/kite.png");
+      
       // Miscellaneous Images
       this.load.image("cloud", "assets/images/cloud.png");
       this.load.image("rain", "assets/images/rain cloud.png");
