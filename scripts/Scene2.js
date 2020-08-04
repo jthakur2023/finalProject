@@ -7,22 +7,23 @@ class Scene2 extends Phaser.Scene{
       this.background = this.add.tileSprite(0, 0, config.width, config.height, "background");
       this.background.setOrigin(0,0);
 
-      this.player = this.add.image(config.width/2,config.height/2, "player");
+      this.player = this.physics.add.image(config.width/2,config.height/2, "player");
 
-      this.obstacles = this.add.group();
+      //this.obstacles = this.add.group();
       
 
       this.obstacles = this.physics.add.group();
-      
       this.timedEvent = this.time.addEvent({ delay: 1500, callback: this.addOneTree, callbackScope: this, repeat: 1 });
       
      
-     
+     this.physics.add.overlap(this.player, this.obstacles, this.hitObstacle, null, this);
       
     }
 
     update() {
       this.background.tilePositionX += .5;
+
+      this.player.setPosition(this.input.mousePointer.x, this.input.mousePointer.y)
     }
 
     
@@ -49,6 +50,10 @@ class Scene2 extends Phaser.Scene{
       trees.outOfBoundsKill = true;
       this.timedEvent.reset({ delay: Phaser.Math.Between(500,3000), callback: this.addOneTree, callbackScope: this, repeat: 1});
 
+  }
+
+  hitObstacle(){
+    console.log("ouch");
   }
  
 }
