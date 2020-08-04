@@ -8,12 +8,14 @@ class Scene2 extends Phaser.Scene{
       this.background.setOrigin(0,0);
 
       this.player = this.physics.add.image(config.width/2,config.height/2, "player");
-
-      //this.obstacles = this.add.group();
+      this.physics.world.setBounds(0, 0, config.width, config.height);
       
 
       this.obstacles = this.physics.add.group();
-      this.timedEvent = this.time.addEvent({ delay: 1500, callback: this.addOneTree, callbackScope: this, repeat: 1 });
+      this.treeEvent = this.time.addEvent({ delay: 1500, callback: this.addOneTree, callbackScope: this, repeat: 1 });
+
+      this.birdEvent = this.time.addEvent({delay: 500, callback: this.addOneBird, callbackScope: this, repeat: 1});
+      this.flappyEvent = this.time.addEvent({delay: 2000, callback: this.addOneFlappy, callbackScope: this, repeat: 1});
       
      
       this.physics.add.overlap(this.player, this.obstacles, this.hitObstacle, null, this);
@@ -27,8 +29,9 @@ class Scene2 extends Phaser.Scene{
 
     update() {
       this.background.tilePositionX += .5;
-
-      this.player.setPosition(this.input.mousePointer.x, this.input.mousePointer.y)
+      let mouseX = this.input.mousePointer.x;
+      let mouseY = this.input.mousePointer.y;
+      this.player.setPosition(mouseX, mouseY)
     }
 
     zeroPad(number, size) {
@@ -59,12 +62,47 @@ class Scene2 extends Phaser.Scene{
       // Automatically kill the pipe when it's no longer visible 
       trees.checkWorldBounds = true;
       trees.outOfBoundsKill = true;
-      this.timedEvent.reset({ delay: Phaser.Math.Between(500,3000), callback: this.addOneTree, callbackScope: this, repeat: 1});
+      this.treeEvent.reset({ delay: Phaser.Math.Between(500,3000), callback: this.addOneTree, callbackScope: this, repeat: 1});
 
+  }
+
+  addOneBird(){
+    let randomNumber = Math.floor(Math.random() * (config.height / 2));
+    let bird = this.physics.add.sprite(config.width - 1, randomNumber);
+    bird.setScale(.1);
+    bird.play("bird_anim");
+    this.obstacles.add(bird);
+    bird.body.velocity.x = -400;
+    bird.checkWorldBounds = true;
+    bird.outOfBoundsKill = true;
+    this.addScore();
+    this.birdEvent.reset({ delay: Phaser.Math.Between(500,3000), callback: this.addOneBird, callbackScope: this, repeat: 1});
+  }
+
+  addOneFlappy(){
+    let randomNumber = Math.floor(Math.random() * (config.width / 2));
+
+    let flappy = this.add.image((config.width / 2) + randomNumber, 0, "flappy");
+    flappy.setScale(.15);
+    flappy.setFlipX(true);
+    flappy.angle = -45;
+    this.obstacles.add(flappy);
+    flappy.body.velocity.x = -400;
+    flappy.body.velocity.y = 400;
+    flappy.checkWorldBounds = true;
+    flappy.outOfBoundsKill = true;
+    this.addScore();
+    this.flappyEvent.reset({ delay: Phaser.Math.Between(500,3000), callback: this.addOneFlappy, callbackScope: this, repeat: 1});
   }
 
   hitObstacle(){
     console.log("ouch");
+  }
+
+  addScore(){
+    console.log("oof");
+    this.score += 1;
+    this.scoreLabel.text = this.zeroPad(this.score, 6);
   }
  
 }
