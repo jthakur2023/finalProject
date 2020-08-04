@@ -16,8 +16,13 @@ class Scene2 extends Phaser.Scene{
       this.timedEvent = this.time.addEvent({ delay: 1500, callback: this.addOneTree, callbackScope: this, repeat: 1 });
       
      
-     this.physics.add.overlap(this.player, this.obstacles, this.hitObstacle, null, this);
+      this.physics.add.overlap(this.player, this.obstacles, this.hitObstacle, null, this);
       
+
+      // Score Label
+      this.score = 0;
+      let scoreFormated = this.zeroPad(this.score, 6);
+      this.scoreLabel = this.add.bitmapText(10, 5, "pixelFont", "SCORE " + scoreFormated, 32);
     }
 
     update() {
@@ -26,7 +31,13 @@ class Scene2 extends Phaser.Scene{
       this.player.setPosition(this.input.mousePointer.x, this.input.mousePointer.y)
     }
 
-    
+    zeroPad(number, size) {
+      let stringNumber = String(number);
+      while (stringNumber.length < (size || 2)) {
+        stringNumber = "0" + stringNumber;
+      }
+      return stringNumber;
+    }
 
     addOneTree() {
       // Create a pipe at the position x and y

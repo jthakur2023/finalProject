@@ -15,6 +15,9 @@ class Scene1 extends Phaser.Scene{
       this.load.image("lightning", "assets/images/ligning cloud.png");
       this.load.image("tree", "assets/images/tree.png");
       this.load.image("cow", "assets/images/cow.png");
+
+      // Font
+      this.load.bitmapFont("pixelFont", "assets/font/font dark.png", "assets/font/font.xml");
     }
     
     create() {

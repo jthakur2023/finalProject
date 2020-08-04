@@ -1,3 +1,13 @@
+
+// Not in use. Placeholder to be used.
+let gamesettings = {
+    backgroundSpeed: 0,
+    treeSpeed: 0,
+    cowSpeed: 0,
+    cloudSpeed: 0,
+    weather: 'clear',
+}
+
 let config = {
     width: 960,
     height: 540,
