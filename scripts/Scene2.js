@@ -14,11 +14,8 @@ class Scene2 extends Phaser.Scene{
 
       this.obstacles = this.physics.add.group();
       
-
-
+      this.timedEvent = this.time.addEvent({ delay: 1500, callback: this.addOneTree, callbackScope: this, repeat: 1 });
       
-     
-      this.addOneTree(config.width/2 - 50, config.height/2 + 180);
      
      
       
@@ -30,10 +27,13 @@ class Scene2 extends Phaser.Scene{
 
     
 
-    addOneTree(posx, posy) {
+    addOneTree() {
       // Create a pipe at the position x and y
-      let trees = this.add.image(posx, posy, "tree");
-      trees.setScale(2);
+      let trees = this.add.image(config.width, config.height /2 + 180, "tree");
+      let randomNumber = Math.floor(Math.random() * 3) + 2
+      console.log(randomNumber);
+      trees.setScale(randomNumber);
+
   
       // Add the pipe to our previously created group
       this.obstacles.add(trees);
@@ -47,6 +47,7 @@ class Scene2 extends Phaser.Scene{
       // Automatically kill the pipe when it's no longer visible 
       trees.checkWorldBounds = true;
       trees.outOfBoundsKill = true;
+      this.timedEvent.reset({ delay: Phaser.Math.Between(500,3000), callback: this.addOneTree, callbackScope: this, repeat: 1});
 
   }
  
