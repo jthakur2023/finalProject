@@ -5,7 +5,7 @@ let gamesettings = {
     treeSpeed: 0,
     cowSpeed: 0,
     cloudSpeed: 0,
-    weather: 'clear',
+    weather: 'Clear',
 }
 
 let config = {
