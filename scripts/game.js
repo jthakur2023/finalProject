@@ -1,10 +1,5 @@
 
-// Not in use. Placeholder to be used.
 let gamesettings = {
-    backgroundSpeed: 0,
-    treeSpeed: 0,
-    cowSpeed: 0,
-    cloudSpeed: 0,
     weather: 'Clear',
 }
 
@@ -55,29 +50,21 @@ const successCallback = (position) => {
         let city = response.address.city; 
         console.log(city); 
         //document.getElementById(`city`).innerHTML = `City: `+ city;
-        getWeather(city);
-        return; 
+        getWeather(city).then((r) =>{
+          console.log(r);
+          gamesettings.weather = r;
+          return;
+        });
       } 
     } 
 }
 
 function getWeather(city){
-  let xhr = new XMLHttpRequest();
-  xhr.open(`GET`, `https://api.openweathermap.org/data/2.5/weather?q=`+ 
-  city + `&appid=3e57d2ecd6d4c365b21e3c7915da85a5`);
-  xhr.send();
-  xhr.onreadystatechange = processRequest;
-  xhr.addEventListener(`readystatechange`, processRequest, false);
+  return fetch(`https://api.openweathermap.org/data/2.5/weather?q=`+ 
+  city + `&appid=3e57d2ecd6d4c365b21e3c7915da85a5`)
+  .then((r) => r.json())
+  .then((r) => r.weather[0].main);
 
-  function processRequest(e){
-    if(xhr.readyState == 4 && xhr.status == 200){
-      let response = JSON.parse(xhr.responseText);
-      let weather = response.weather[0].main;
-      console.log(weather);
-      gamesettings.weather = weather;
-      return;
-    }
-  }
 }
 
 
