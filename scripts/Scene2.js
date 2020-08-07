@@ -46,10 +46,12 @@ class Scene2 extends Phaser.Scene{
 
     addOneTree() {
       // Create a pipe at the position x and y
-      let trees = this.add.image(config.width, config.height /2 + 180, "tree");
-      let randomNumber = Math.floor(Math.random() * 2.5) + 1.2
+      let trees = this.physics.add.image(0,0, "tree");
+      trees.setOrigin(0, 0);
+      let randomNumber = Math.random() + 1
       console.log(randomNumber);
       trees.setScale(randomNumber);
+      trees.setPosition(config.width, config.height - (trees.height * randomNumber));
 
   
       // Add the pipe to our previously created group
@@ -138,7 +140,6 @@ class Scene2 extends Phaser.Scene{
   }
 
   hitObstacle(){
-    console.log("ouch");
     if(this.player.alpha < 1){
       return;
     }
