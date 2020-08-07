@@ -63,7 +63,7 @@ const successCallback = (position) => {
 
 function getWeather(city){
   let xhr = new XMLHttpRequest();
-  xhr.open(`GET`, `http://api.openweathermap.org/data/2.5/weather?q=`+ 
+  xhr.open(`GET`, `https://api.openweathermap.org/data/2.5/weather?q=`+ 
   city + `&appid=3e57d2ecd6d4c365b21e3c7915da85a5`);
   xhr.send();
   xhr.onreadystatechange = processRequest;
