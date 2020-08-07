@@ -49,7 +49,6 @@ class Scene2 extends Phaser.Scene{
       let trees = this.physics.add.image(0,0, "tree");
       trees.setOrigin(0, 0);
       let randomNumber = Math.random() + 1
-      console.log(randomNumber);
       trees.setScale(randomNumber);
       trees.setPosition(config.width, config.height - (trees.height * randomNumber));
 
@@ -182,7 +181,6 @@ resetPlayer(){
 }
 
   addScore(){
-    console.log("oof");
     this.score += 1;
     this.scoreLabel.text = this.zeroPad(this.score, 6);
   }
