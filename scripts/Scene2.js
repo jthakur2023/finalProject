@@ -102,10 +102,10 @@ class Scene2 extends Phaser.Scene{
     switch (gamesettings.weather){
       case "Clouds": 
         cloud.setAlpha(.1);
-        cloud.body.velocity.x = -400;
+        cloud.body.velocity.x = -200;
         cloud.checkWorldBounds = true;
         cloud.outOfBoundsKill = true;
-        this.cloudEvent.reset({delay: Phaser.Math.Between(250, 1000), callback: this.addCloud, callbackScope: this, repeat: 1});
+        this.cloudEvent.reset({delay: Phaser.Math.Between(1000, 2500), callback: this.addCloud, callbackScope: this, repeat: 1});
         break;
       case "Drizzle": cloud.setTexture("rain");
           this.cloudEvent.reset({delay: Phaser.Math.Between(500, 2000), callback: this.addCloud, callbackScope: this, repeat: 1});
@@ -121,15 +121,15 @@ class Scene2 extends Phaser.Scene{
         break;
       //need thunderstorm
       case "Clear": 
-      this.cloudEvent.reset({delay: Phaser.Math.Between(1000, 4000), callback: this.addCloud, callbackScope: this, repeat: 1});
-      cloud.body.velocity.x = -400;
+      this.cloudEvent.reset({delay: Phaser.Math.Between(2500, 5000), callback: this.addCloud, callbackScope: this, repeat: 1});
+      cloud.body.velocity.x = -100;
         cloud.checkWorldBounds = true;
         cloud.outOfBoundsKill = true;
       cloud.setAlpha(.05);
     break;
       default:
           this.cloudEvent.reset({delay: Phaser.Math.Between(1000, 4000), callback: this.addCloud, callbackScope: this, repeat: 1});
-          cloud.body.velocity.x = -400;
+          cloud.body.velocity.x = -100;
         cloud.checkWorldBounds = true;
         cloud.outOfBoundsKill = true;
           cloud.setAlpha(.05);
