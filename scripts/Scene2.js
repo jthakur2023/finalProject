@@ -104,5 +104,6 @@ class Scene2 extends Phaser.Scene{
     this.score += 1;
     this.scoreLabel.text = this.zeroPad(this.score, 6);
   }
+
  
 }
