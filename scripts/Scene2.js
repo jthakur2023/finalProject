@@ -139,8 +139,46 @@ class Scene2 extends Phaser.Scene{
 
   hitObstacle(){
     console.log("ouch");
+    if(this.player.alpha < 1){
+      return;
+    }
     
+    alert("You lost! Would you like to keep flying your kite?");
+    this.player.disableBody(true, true);
+
+    this.time.addEvent({
+        delay: 1000,
+        callback: this.resetPlayer(),
+        callbackScope: this,
+        loop: false
+    });
+    
+    var tween = this.tweens.add({
+        targets: this.player,
+        y: config.height / 2,
+        ease: 'Power1',
+        duration: 1500,
+        repeat: 0,
+        onComplete: function(){
+            this.player.alpha = 1;
+        },
+        callbackScope: this
+    });
+
+    //this.resetPlayer();
+
+    //reset score
+    this.score = 0;  
+    this.scoreLabel.text = this.zeroPad(this.score, 6);
   }
+
+resetPlayer(){
+    var x = config.width/2-8;
+    var y = config.height/2;
+    this.player.enableBody(true, x, y, true, true);
+
+    this.player.alpha = 0.5;
+}
 
   addScore(){
     console.log("oof");
