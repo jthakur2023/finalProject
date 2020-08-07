@@ -5,7 +5,7 @@ let gamesettings = {
     treeSpeed: 0,
     cowSpeed: 0,
     cloudSpeed: 0,
-    weather: 'clear',
+    weather: 'Clear',
 }
 
 let config = {
@@ -55,9 +55,29 @@ const successCallback = (position) => {
         let city = response.address.city; 
         console.log(city); 
         //document.getElementById(`city`).innerHTML = `City: `+ city;
+        getWeather(city);
         return; 
       } 
     } 
+}
+
+function getWeather(city){
+  let xhr = new XMLHttpRequest();
+  xhr.open(`GET`, `http://api.openweathermap.org/data/2.5/weather?q=`+ 
+  city + `&appid=3e57d2ecd6d4c365b21e3c7915da85a5`);
+  xhr.send();
+  xhr.onreadystatechange = processRequest;
+  xhr.addEventListener(`readystatechange`, processRequest, false);
+
+  function processRequest(e){
+    if(xhr.readyState == 4 && xhr.status == 200){
+      let response = JSON.parse(xhr.responseText);
+      let weather = response.weather[0].main;
+      console.log(weather);
+      gamesettings.weather = weather;
+      return;
+    }
+  }
 }
 
 

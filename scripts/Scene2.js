@@ -19,6 +19,8 @@ class Scene2 extends Phaser.Scene{
       
      
       this.physics.add.overlap(this.player, this.obstacles, this.hitObstacle, null, this);
+
+      this.cloudEvent = this.time.addEvent({delay: 2500, callback: this.addCloud, callbackScope: this, repeat: 1});
       
 
       // Score Label
@@ -44,10 +46,12 @@ class Scene2 extends Phaser.Scene{
 
     addOneTree() {
       // Create a pipe at the position x and y
-      let trees = this.add.image(config.width, config.height /2 + 180, "tree");
-      let randomNumber = Math.floor(Math.random() * 3) + 2
+      let trees = this.physics.add.image(0,0, "tree");
+      trees.setOrigin(0, 0);
+      let randomNumber = Math.random() + 1
       console.log(randomNumber);
       trees.setScale(randomNumber);
+      trees.setPosition(config.width, config.height - (trees.height * randomNumber));
 
   
       // Add the pipe to our previously created group
@@ -95,9 +99,87 @@ class Scene2 extends Phaser.Scene{
     this.flappyEvent.reset({ delay: Phaser.Math.Between(500,3000), callback: this.addOneFlappy, callbackScope: this, repeat: 1});
   }
 
-  hitObstacle(){
-    console.log("ouch");
+  addCloud(){
+    let cloud = this.physics.add.image(config.width, config.height * .1, "cloud");;
+    switch (gamesettings.weather){
+      case "Clouds": 
+        cloud.setAlpha(.1);
+        cloud.body.velocity.x = -200;
+        cloud.checkWorldBounds = true;
+        cloud.outOfBoundsKill = true;
+        this.cloudEvent.reset({delay: Phaser.Math.Between(1000, 2500), callback: this.addCloud, callbackScope: this, repeat: 1});
+        break;
+      case "Drizzle": cloud.setTexture("rain");
+          this.cloudEvent.reset({delay: Phaser.Math.Between(500, 2000), callback: this.addCloud, callbackScope: this, repeat: 1});
+          cloud.body.velocity.x = -400;
+        cloud.checkWorldBounds = true;
+        cloud.outOfBoundsKill = true;
+        break;
+      case "Rain": cloud.setTexture("rain");
+          this.cloudEvent.reset({delay: Phaser.Math.Between(300, 1000), callback: this.addCloud, callbackScope: this, repeat: 1});
+          cloud.body.velocity.x = -400;
+        cloud.checkWorldBounds = true;
+        cloud.outOfBoundsKill = true;
+        break;
+      //need thunderstorm
+      case "Clear": 
+      this.cloudEvent.reset({delay: Phaser.Math.Between(2500, 5000), callback: this.addCloud, callbackScope: this, repeat: 1});
+      cloud.body.velocity.x = -100;
+        cloud.checkWorldBounds = true;
+        cloud.outOfBoundsKill = true;
+      cloud.setAlpha(.05);
+    break;
+      default:
+          this.cloudEvent.reset({delay: Phaser.Math.Between(1000, 4000), callback: this.addCloud, callbackScope: this, repeat: 1});
+          cloud.body.velocity.x = -100;
+        cloud.checkWorldBounds = true;
+        cloud.outOfBoundsKill = true;
+          cloud.setAlpha(.05);
+    }
+  
   }
+
+  hitObstacle(){
+    if(this.player.alpha < 1){
+      return;
+    }
+    
+    alert("You lost! Would you like to keep flying your kite?");
+    this.player.disableBody(true, true);
+
+    this.time.addEvent({
+        delay: 1000,
+        callback: this.resetPlayer(),
+        callbackScope: this,
+        loop: false
+    });
+    
+    var tween = this.tweens.add({
+        targets: this.player,
+        y: config.height / 2,
+        ease: 'Power1',
+        duration: 1500,
+        repeat: 0,
+        onComplete: function(){
+            this.player.alpha = 1;
+        },
+        callbackScope: this
+    });
+
+    //this.resetPlayer();
+
+    //reset score
+    this.score = 0;  
+    this.scoreLabel.text = this.zeroPad(this.score, 6);
+  }
+
+resetPlayer(){
+    var x = config.width/2-8;
+    var y = config.height/2;
+    this.player.enableBody(true, x, y, true, true);
+
+    this.player.alpha = 0.5;
+}
 
   addScore(){
     console.log("oof");
