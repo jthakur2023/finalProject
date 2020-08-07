@@ -169,7 +169,7 @@ class Scene2 extends Phaser.Scene{
 
     //reset score
     this.score = 0;  
-    this.scoreLabel.text = this.zeroPad(this.score, 6);
+    this.scoreLabel.text = "SCORE " + this.zeroPad(this.score, 6);
   }
 
 resetPlayer(){
@@ -182,7 +182,7 @@ resetPlayer(){
 
   addScore(){
     this.score += 1;
-    this.scoreLabel.text = this.zeroPad(this.score, 6);
+    this.scoreLabel.text = "SCORE " + this.zeroPad(this.score, 6);
   }
 
  
