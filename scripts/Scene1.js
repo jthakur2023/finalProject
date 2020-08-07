@@ -17,9 +17,16 @@ class Scene1 extends Phaser.Scene{
         frameWidth: 727,
         frameHeight: 465
       });
+      this.load.spritesheet("rain", "assets/spritesheet/rain-spritesheet.png", {
+        frameWidth: 130,
+        frameHeight: 80
+      });
+      this.load.spritesheet("thunder", "assets/spritesheet/lightning-extended-spritesheet.png", {
+        frameWidth: 127,
+        frameHeight: 99
+      });
       // Miscellaneous Images
       this.load.image("cloud", "assets/images/cloud.png");
-      this.load.image("rain", "assets/images/rain cloud.png");
       this.load.image("lightning", "assets/images/lightning cloud.png");
       this.load.image("tree", "assets/images/tree.png");
       this.load.image("cow", "assets/images/cow.png");
@@ -36,6 +43,18 @@ class Scene1 extends Phaser.Scene{
         frames: this.anims.generateFrameNumbers("bird"),
         frameRate: 20,
         repeat: -1,
+      });
+      this.anims.create({
+        key: "rain_anim",
+        frames: this.anims.generateFrameNumbers("rain"),
+        frameRate: 2,
+        repeat: -1,
     });
+    this.anims.create({
+      key: "thunder_anim",
+      frames: this.anims.generateFrameNumbers("thunder"),
+      frameRate: 4,
+      repeat: -1,
+  });
     }
 }

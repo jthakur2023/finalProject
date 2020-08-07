@@ -71,7 +71,7 @@ class Scene2 extends Phaser.Scene{
 
   addOneBird(){
     let randomNumber = Math.floor(Math.random() * (config.height / 2));
-    let bird = this.physics.add.sprite(config.width - 1, randomNumber);
+    let bird = this.physics.add.sprite(config.width - 1, randomNumber, "bird");
     bird.setScale(.1);
     bird.play("bird_anim");
     this.obstacles.add(bird);
@@ -99,29 +99,37 @@ class Scene2 extends Phaser.Scene{
   }
 
   addCloud(){
-    let cloud = this.physics.add.image(config.width, config.height * .1, "cloud");;
+    let cloud;
     switch (gamesettings.weather){
-      case "Clouds": 
+      case "Clouds": cloud = this.physics.add.image(config.width, config.height * .1, "cloud");
         cloud.setAlpha(.1);
         cloud.body.velocity.x = -200;
         cloud.checkWorldBounds = true;
         cloud.outOfBoundsKill = true;
         this.cloudEvent.reset({delay: Phaser.Math.Between(1000, 2500), callback: this.addCloud, callbackScope: this, repeat: 1});
         break;
-      case "Drizzle": cloud.setTexture("rain");
+      case "Drizzle": cloud = this.physics.add.sprite(config.width, config.height * .1, "rain");
+          cloud.play("rain_anim");
           this.cloudEvent.reset({delay: Phaser.Math.Between(500, 2000), callback: this.addCloud, callbackScope: this, repeat: 1});
           cloud.body.velocity.x = -400;
         cloud.checkWorldBounds = true;
         cloud.outOfBoundsKill = true;
         break;
-      case "Rain": cloud.setTexture("rain");
+      case "Rain": cloud = this.physics.add.sprite(config.width, config.height * .1, "rain");
+          cloud.play("rain_anim");
           this.cloudEvent.reset({delay: Phaser.Math.Between(300, 1000), callback: this.addCloud, callbackScope: this, repeat: 1});
           cloud.body.velocity.x = -400;
         cloud.checkWorldBounds = true;
         cloud.outOfBoundsKill = true;
         break;
-      //need thunderstorm
-      case "Clear": 
+      case "Thunderstorm": cloud = this.physics.add.sprite(config.width, config.height * .1, "thunder");
+        cloud.play("thunder_anim");
+        this.cloudEvent.reset({delay: Phaser.Math.Between(300, 1000), callback: this.addCloud, callbackScope: this, repeat: 1});
+        cloud.body.velocity.x = -400;
+      cloud.checkWorldBounds = true;
+      cloud.outOfBoundsKill = true;
+      break;
+      case "Clear": cloud = this.physics.add.image(config.width, config.height * .1, "cloud");
       this.cloudEvent.reset({delay: Phaser.Math.Between(2500, 5000), callback: this.addCloud, callbackScope: this, repeat: 1});
       cloud.body.velocity.x = -100;
         cloud.checkWorldBounds = true;
@@ -129,6 +137,7 @@ class Scene2 extends Phaser.Scene{
       cloud.setAlpha(.05);
     break;
       default:
+        cloud = this.physics.add.image(config.width, config.height * .1, "cloud");
           this.cloudEvent.reset({delay: Phaser.Math.Between(1000, 4000), callback: this.addCloud, callbackScope: this, repeat: 1});
           cloud.body.velocity.x = -100;
         cloud.checkWorldBounds = true;
@@ -142,47 +151,19 @@ class Scene2 extends Phaser.Scene{
     if(this.player.alpha < 1){
       return;
     }
-    
-    alert("You lost! Would you like to keep flying your kite?");
-    this.player.disableBody(true, true);
 
-    this.time.addEvent({
-        delay: 1000,
-        callback: this.resetPlayer(),
-        callbackScope: this,
-        loop: false
-    });
-    
-    var tween = this.tweens.add({
-        targets: this.player,
-        y: config.height / 2,
-        ease: 'Power1',
-        duration: 1500,
-        repeat: 0,
-        onComplete: function(){
-            this.player.alpha = 1;
-        },
-        callbackScope: this
-    });
-
-    //this.resetPlayer();
-
-    //reset score
-    this.score = 0;  
-    this.scoreLabel.text = this.zeroPad(this.score, 6);
+    this.player.setAlpha(.5);
+    setTimeout(this.resetPlayer, 50);
   }
 
 resetPlayer(){
-    var x = config.width/2-8;
-    var y = config.height/2;
-    this.player.enableBody(true, x, y, true, true);
-
-    this.player.alpha = 0.5;
+  alert("You lost! Would you like to keep flying your kite?");
+  location.reload();
 }
-
   addScore(){
     this.score += 1;
-    this.scoreLabel.text = this.zeroPad(this.score, 6);
+    this.scoreLabel.text = "SCORE " +this.zeroPad(this.score, 6);
+
   }
 
  
