@@ -47,7 +47,7 @@ class Scene2 extends Phaser.Scene{
     addOneTree() {
       // Create a pipe at the position x and y
       let trees = this.add.image(config.width, config.height /2 + 180, "tree");
-      let randomNumber = Math.floor(Math.random() * 3) + 2
+      let randomNumber = Math.floor(Math.random() * 2.5) + 1.2
       console.log(randomNumber);
       trees.setScale(randomNumber);
 
@@ -139,6 +139,7 @@ class Scene2 extends Phaser.Scene{
 
   hitObstacle(){
     console.log("ouch");
+    
   }
 
   addScore(){
